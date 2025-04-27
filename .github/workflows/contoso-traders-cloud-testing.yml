@@ -136,9 +136,9 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           scope: subscription
-          region: australiaeast
+          region: ${{ vars.DEPLOYMENTREGION }}
           template: ./iac/createResourceGroup.bicep
-          parameters: rgName=${{ env.RESOURCE_GROUP_NAME }} suffix=${{ vars.SUFFIX }} rgLocation=australiaeast
+          parameters: rgName=${{ env.RESOURCE_GROUP_NAME }} suffix=${{ vars.SUFFIX }} rgLocation=${{ vars.DEPLOYMENTREGION }}
       # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
       # include storage accounts, function apps, app services cosmos db, and service bus etc.
       # The below step can also be manually executed as follows:
@@ -151,7 +151,7 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           scope: resourcegroup
-          region: australiaeast
+          region: ${{ vars.DEPLOYMENTREGION }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           template: ./iac/createResources.bicep
           parameters: ./iac/createResources.parameters.json suffix=${{ vars.SUFFIX }} sqlPassword=${{ secrets.SQLPASSWORD }} deployPrivateEndpoints=${{ vars.DEPLOYPRIVATEENDPOINTS }}
